@@ -1,9 +1,3 @@
-# print("1: Ik wil weten hoeveel kluizen nog vrij zijn ")
-# print("2: Ik wil een nieuwe kluis")
-# print("3: Ik wil even iets uit mijn kluis halen")
-# print("4: Ik geef mijn kluis terug")
-
-
 def aantal_kluizen_vrij(data):
 
     with open(data, "r") as file:
@@ -82,17 +76,33 @@ def kluis_teruggeven(data):
                     wachtwoord = waarde[1]
                     remove.write(f"{num};{wachtwoord} \n")
         
+while True:
+    print(50 * "=")
+    print("1: Ik wil weten hoeveel kluizen nog vrij zijn ")
+    print("2: Ik wil een nieuwe kluis")
+    print("3: Ik wil even iets uit mijn kluis halen")
+    print("4: Ik geef mijn kluis terug")
+    print("5: Stop met het programma")
+    print(50 * "=")
+    
+    try: 
+        user_menu_option = int(input("Kies uit het menu (1-5): "))
         
+    except ValueError:
+        print("Foute invoer probeer nog eens")
         
-        
-        
-        
-        
-        
-        
-        
+    bestand_info = "kluizen.txt"
+    match user_menu_option:
+        case 1:
+            print(aantal_kluizen_vrij(bestand_info))
+        case 2:
+            print(nieuwe_kluis(bestand_info))
+        case 3:
+            print(kluis_openen(bestand_info))
+        case 4:
+            print(kluis_teruggeven(bestand_info))
+        case 5:
+            break
+    
 
-# print(aantal_kluizen_vrij("kluizen.txt"))
-#print(nieuwe_kluis("kluizen.txt"))
-#print(kluis_openen("kluizen.txt"))
 
