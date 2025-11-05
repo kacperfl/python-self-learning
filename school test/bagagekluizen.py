@@ -47,5 +47,52 @@ def nieuwe_kluis(bestand):
     return kleinste_vrije
 
 
+def kluis_openen(data):
+    ask_kluisnr = int(input("Voer de kluis nummer in: "))
+    ask_password = input("Voer de wachtwoord in voor de kluis nummer: ").strip()
+    with open(data, "r") as file:
+        for regel in file:
+            regel = regel.strip()
+            regel = regel.split(";")
+            kluis_nr = int(regel[0])
+            wachtwoord = regel[1]
+            if ask_kluisnr == kluis_nr:
+                if ask_password == wachtwoord:
+                    return True, ask_kluisnr, ask_password
+        else: 
+            return False, None
+
+def kluis_teruggeven(data):
+    resultaat, nummer, password = kluis_openen("kluizen.txt")   
+    if resultaat == False:
+        return False
+    elif resultaat == True:
+        regels = []
+        with open(data, "r") as read:
+            for regel in read:
+                regel = regel.strip()
+                regel = regel.split(";")
+                kluis_nr = int(regel[0])
+                if kluis_nr != nummer:
+                    regels.append(regel)
+            
+            with open(data, "w") as remove:
+                for waarde in regels:
+                    num = waarde[0]
+                    wachtwoord = waarde[1]
+                    remove.write(f"{num};{wachtwoord} \n")
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
 # print(aantal_kluizen_vrij("kluizen.txt"))
-print(nieuwe_kluis("kluizen.txt"))
+#print(nieuwe_kluis("kluizen.txt"))
+#print(kluis_openen("kluizen.txt"))
+
