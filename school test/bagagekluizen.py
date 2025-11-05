@@ -75,6 +75,7 @@ def kluis_teruggeven(data):
                     num = waarde[0]
                     wachtwoord = waarde[1]
                     remove.write(f"{num};{wachtwoord} \n")
+    return True
         
 while True:
     print(50 * "=")
