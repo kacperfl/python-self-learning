@@ -7,7 +7,7 @@ def binary_search(lijst, doel):
         midden = (links + rechts) // 2
         
         if lijst[midden] == doel:
-            return midden
+            return doel
         elif lijst[midden] < doel:
             links = midden + 1
         elif lijst[midden] > doel:
