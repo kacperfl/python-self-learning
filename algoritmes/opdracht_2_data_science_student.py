@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import matplotlib.pyplot as plt
-
 
 """
 Oriëntatie op AI
@@ -25,9 +23,9 @@ Let op! Het is niet toegestaan om bestaande modules te importeren en te
 """
 
 # TODO: Vul hier je naam, klas en studentnummer in.
-naam = ""
-klas = ""
-studentnummer = -1
+naam = "Kacper"
+klas = "V1A"
+studentnummer = 192618
 
 
 """
@@ -45,7 +43,15 @@ def mean(lst):
     Returns:
         float: Het gemiddelde van de gegeven getallen.
     """
-    return
+    
+    counter = 0
+    som = 0
+    
+    for i in lst:
+        counter += 1
+        som += i
+
+    return som / counter
 
 
 """
@@ -119,7 +125,16 @@ def std(lst):
     Returns:
         float: De standaardafwijking van de gegeven getallen.
     """
-    return
+    
+    n = len(lst)
+    gemiddelde = sum(lst) / n
+    sum_sq_diff = 0
+    
+    for i in lst:
+        sum_sq_diff += (i - gemiddelde) ** 2
+    varience = sum_sq_diff / n
+    std_result = varience ** (0.5)
+    return float(std_result)
 
 
 """
@@ -128,29 +143,39 @@ def std(lst):
     
 """
 def cor(x, y):
- 
+    """
+    Bereken de Pearsons correlatiecoëfficient r tussen twee lijsten van getallen.
+
+    Args:
+        x (list): De eerste lijst met gehele getallen.
+        y (list): De tweede lijst met gehele getallen.
+
+    Returns:
+        float: Pearsons correlatiecoëfficient r.
+    """
     n = len(x)
+    gemiddelde_x = sum(x) / n
+    gemiddelde_y = sum(y) / n
     
-    gem_x = sum(x) / n
-    gem_y = sum(y) / n
-    cov = 0
+    kwad_som1 = 0
+    kwad_som2 = 0
     
-    kwad_1 = 0
-    kwad_2 = 0
+    teller = 0
     
     for xi, yi in zip(x, y):
-        diff1 = (xi - gem_x) 
-        diff2 = (yi - gem_y) 
+        diff1 = xi - gemiddelde_x
+        diff2 = yi - gemiddelde_y
         
-        cov += diff1 * diff2
-        kwad_1 += diff1 ** 2
-        kwad_2 += diff2 ** 2
+        kwad_som1 += diff1 ** 2
+        kwad_som2 += diff2 ** 2
+        
+        teller += diff1 * diff2
+        
+    std1 = (kwad_som1 /n) ** 0.5
+    std2 = (kwad_som2 / n) ** 0.5
     
-    std1 = (kwad_1 / n) ** 0.5
-    std2 = (kwad_2 / n) ** 0.5
-    coverantie = cov / n
+    r = teller / (n * std1 * std2)
     
-    r = coverantie / (std1 * std2)
     return r
 
 
