@@ -128,26 +128,30 @@ def std(lst):
     
 """
 def cor(x, y):
-    """
-    Bereken de Pearsons correlatiecoëfficient r tussen twee lijsten van getallen.
-
-    Args:
-        x (list): De eerste lijst met gehele getallen.
-        y (list): De tweede lijst met gehele getallen.
-
-    Returns:
-        float: Pearsons correlatiecoëfficient r.
-    """
+ 
+    n = len(x)
     
-    con = 0
-    x_gem = sum(x) / len(x)
-    y_gem = sum(y) / len(y)
+    gem_x = sum(x) / n
+    gem_y = sum(y) / n
+    cov = 0
     
-    for _ in range(x, y):
-        def_con = con / len(x,y)
-        std_x = 
-
-    return
+    kwad_1 = 0
+    kwad_2 = 0
+    
+    for xi, yi in zip(x, y):
+        diff1 = (xi - gem_x) 
+        diff2 = (yi - gem_y) 
+        
+        cov += diff1 * diff2
+        kwad_1 += diff1 ** 2
+        kwad_2 += diff2 ** 2
+    
+    std1 = (kwad_1 / n) ** 0.5
+    std2 = (kwad_2 / n) ** 0.5
+    coverantie = cov / n
+    
+    r = coverantie / (std1 * std2)
+    return r
 
 
 
