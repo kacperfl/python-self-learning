@@ -16,37 +16,26 @@ Let op! Het is niet toegestaan om bestaande modules te importeren en te
 
 
 def gradient_descent(x, y, num_iterations=1000, learning_rate=0.0001):
-    """
-    Traint de coefficienten a en b voor het lineaire regressiemodel ŷ = a + b * x met de gradient descent methode.
-
-    Args:
-        x (list): de onafhankelijke waarden van de observaties
-        y (list): de afhankelijke waarden van de observaties
-        num_iterations (int): aantal iteraties om te leren
-        learning_rate (float): leerconstante
-
-    Returns:
-        [float, float]: de berekende coefficienten
-    """
-    n = len(x)  
     a = 0
     b = 0
+    n = len(x)
+    
     
     for _ in range(num_iterations):
         gradient_a = 0
         gradient_b = 0
-        for i in range(n):
-            x_i = x[i]
-            y_i = y[i]
+        
+        for xi, yi in zip(x, y):
+            #in wiskunde is het anders:
+            # y_pred = (a * x) + b
+            # error = y - y_pred
+            error = (a + b * xi) - yi
+            gradient_a += 2 * error    
+            gradient_b += 2 * error * xi
             
-            error = (a + b * x_i) - y_i
-            gradient_a = gradient_a + 2 * error
-            gradient_b = gradient_b + 2 * error * x_i
-            
-        a = a - gradient_a * learning_rate / n
-        b = b - gradient_b * learning_rate / n
-    
-    
+        a -= gradient_a * learning_rate / n
+        b -= gradient_b * learning_rate / n
+        
     return [a, b]
 
 """
