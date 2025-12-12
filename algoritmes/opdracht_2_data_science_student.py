@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import matplotlib
 """
 Oriëntatie op AI
 
@@ -33,6 +33,8 @@ studentnummer = 192618
     Implementeer onderstaande functie om het gemiddelde van een lijst getallen te berekenen.
 
 """
+
+
 def mean(lst):
     """
     Bepaal het gemiddelde van een lijst getallen.
@@ -43,10 +45,10 @@ def mean(lst):
     Returns:
         float: Het gemiddelde van de gegeven getallen.
     """
-    
+
     counter = 0
     som = 0
-    
+
     for i in lst:
         counter += 1
         som += i
@@ -59,6 +61,23 @@ def mean(lst):
     Implementeer onderstaande functie om het eerste kwartiel van een lijst getallen te berekenen.
     
 """
+# overgenomen van de oefen opdracht om mediaan uit te rekenen :)
+def median(lst):
+    clean = sorted(lst)
+    n = len(clean)
+    
+    links = 0
+    rechts = len(clean) - 1
+    mid = (links + rechts) // 2
+    
+    if n % 2 == 1:
+        return float(clean[mid])
+    else:
+        mediaan1 = (n // 2) - 1
+        mediaan2 = n // 2 
+        return float((clean[mediaan1] + clean[mediaan2]) / 2)
+    
+
 def q1(lst):
     """
     Bepaal het eerste kwartiel Q1 van een lijst getallen.
@@ -71,7 +90,22 @@ def q1(lst):
     Returns:
         float: Het eerste kwartiel Q1 van de gegeven getallen.
     """
-    return
+
+    clean = sorted(lst)
+    n = len(clean)
+    
+    links = 0
+    rechts = len(clean) - 1
+    mid = (links + rechts) // 2
+
+    if n % 2 == 1:
+        left = clean[:mid]
+        kwartiel_q1 = median(left)
+        return kwartiel_q1
+    else:
+        left = clean[:mid + 1]
+        kwartiel_q1 = median(left)
+        return kwartiel_q1
 
 
 """
@@ -79,6 +113,8 @@ def q1(lst):
     Implementeer onderstaande functie om het derde kwartiel van een lijst getallen te berekenen.
     
 """
+
+
 def q3(lst):
     """
     Bepaal het derde kwartiel Q3 van een lijst getallen.
@@ -89,7 +125,19 @@ def q3(lst):
     Returns:
         float: Het derde kwartiel Q3 van de gegeven getallen.
     """
-    return
+    clean = sorted(lst)
+    n = len(clean)
+    mid = n // 2
+
+    if n % 2 == 1:
+        right = clean[mid + 1:]
+        kwartiel_q3 = median(right)
+        return kwartiel_q3
+    else:
+        right = clean[mid:]
+        kwartiel_q3 = median(right)
+        return kwartiel_q3
+
 
 
 """
@@ -97,6 +145,8 @@ def q3(lst):
     Implementeer onderstaande functie om de variantie van een lijst getallen te berekenen.
     
 """
+
+
 def var(lst):
     """
     Bepaal de variantie van een lijst getallen.
@@ -107,7 +157,15 @@ def var(lst):
     Returns:
         float: De variantie van de gegeven getallen.
     """
-    return
+    n = len(lst)
+    gemiddelde_x = sum(lst) / n
+    kwad_som = 0
+
+    for i in lst:
+        kwad_som += (i - gemiddelde_x) ** 2
+        variantie = kwad_som / n
+
+    return variantie
 
 
 """
@@ -115,6 +173,8 @@ def var(lst):
     Implementeer onderstaande functie om de standaarddeviatie van een lijst getallen te berekenen.
     
 """
+
+
 def std(lst):
     """
     Bepaal de standaardafwijking van een lijst getallen.
@@ -125,11 +185,11 @@ def std(lst):
     Returns:
         float: De standaardafwijking van de gegeven getallen.
     """
-    
+
     n = len(lst)
     gemiddelde = sum(lst) / n
     sum_sq_diff = 0
-    
+
     for i in lst:
         sum_sq_diff += (i - gemiddelde) ** 2
     varience = sum_sq_diff / n
@@ -142,6 +202,8 @@ def std(lst):
     Implementeer onderstaande functie om Pearsons correlatiecoëfficient r tussen twee lijsten van getallen te berekenen.
     
 """
+
+
 def cor(x, y):
     """
     Bereken de Pearsons correlatiecoëfficient r tussen twee lijsten van getallen.
@@ -156,28 +218,30 @@ def cor(x, y):
     n = len(x)
     gemiddelde_x = sum(x) / n
     gemiddelde_y = sum(y) / n
-    
+
     kwad_som1 = 0
     kwad_som2 = 0
-    
+
     teller = 0
-    
+
     for xi, yi in zip(x, y):
         diff1 = xi - gemiddelde_x
         diff2 = yi - gemiddelde_y
-        
-        kwad_som1 += diff1 ** 2
-        kwad_som2 += diff2 ** 2
-        
-        teller += diff1 * diff2
-        
-    std1 = (kwad_som1 /n) ** 0.5
-    std2 = (kwad_som2 / n) ** 0.5
-    
-    r = teller / (n * std1 * std2)
-    
-    return r
 
+        kwad_som1 += diff1**2
+        kwad_som2 += diff2**2
+
+        teller += diff1 * diff2
+
+    std1 = (kwad_som1 / n) ** 0.5
+    std2 = (kwad_som2 / n) ** 0.5
+
+    if std1 == 0 or std2 ==0:
+        return float(0)
+    
+    cov = teller / n
+    r = float(cov / (std1 * std2))
+    return r
 
 
 """, 
@@ -185,6 +249,8 @@ def cor(x, y):
     Implementeer onderstaande functie om de frequenties van een lijst getallen te berekenen.
     
 """
+
+
 def freq(lst):
     """
     Bepaal de frequenties van alle getallen in een lijst.
@@ -204,7 +270,14 @@ def freq(lst):
         {1: 3, 2: 2, 3: 1}
     """
     freqs = dict()
+    
+    for x in lst:
+        if x in freqs:
+            freqs[x] += 1
+        else:
+            freqs[x] = 1
     return freqs
+
 
 """
 8. Implementatie plot_grades
@@ -212,9 +285,11 @@ def freq(lst):
     - Toon een x- en een y-label
     - Toon een grafiektitel (dit heb je nog nooit hoeven doen en zul je zelf moeten uitzoeken) 
 """
+
+
 def plot_grades(presence, grade):
     """
-    Plot het gemiddelde eindcijfer t.o.v. de gemiddelde aanwezigheid te plotten in een spreidingsdiagram. 
+    Plot het gemiddelde eindcijfer t.o.v. de gemiddelde aanwezigheid te plotten in een spreidingsdiagram.
 
     Args:
         presence (list): Een lijst met gehele getallen.
@@ -229,6 +304,8 @@ def plot_grades(presence, grade):
     Implementeer onderstaande functie om de modi van een lijst getallen te berekenen.
     
 """
+
+
 def modes(lst):
     """
     Bepaal alle modi van een lijst getallen.
@@ -251,7 +328,6 @@ def modes(lst):
     modi = []
 
 
-
 """
 # XXX>
 ==========================[ HU TESTRAAMWERK ]================================
@@ -261,12 +337,13 @@ Je kunt je code testen door deze file te runnen of met behulp van pytest.
 import os
 import sys
 
+
 def __my_assert_args(function, args, expected_output, check_type=True):
     """
     Controleer of gegeven functie met gegeven argumenten het verwachte resultaat oplevert.
     Optioneel wordt ook het return-type gecontroleerd.
     """
-    argstr = str(args).replace(',)', ')')
+    argstr = str(args).replace(",)", ")")
     output = function(*args)
 
     # Controleer eerst het return-type (optioneel)
@@ -290,10 +367,7 @@ def test_id():
 
 
 def test_mean():
-    testcases = [
-        (([4, 2, 5, 8, 6],), 5.0),
-        (([1, 3, 2, 4, 6, 2, 4, 2],), 3.0)
-    ]
+    testcases = [(([4, 2, 5, 8, 6],), 5.0), (([1, 3, 2, 4, 6, 2, 4, 2],), 3.0)]
 
     for case in testcases:
         __my_assert_args(mean, case[0], case[1])
@@ -319,7 +393,6 @@ def test_q1():
         (([3, 5, 7, 8, 9, 11, 15, 16, 20, 21],), 7.0),
         (([1, 2, 5, 6, 7, 9, 12, 15, 18, 19, 27],), 5.0),
         (([0, 1, 2, 2, 2, 2, 3, 5, 5],), 1.5),
-
     ]
 
     for case in testcases:
@@ -337,7 +410,6 @@ def test_q3():
         (([3, 5, 7, 8, 9, 11, 15, 16, 20, 21],), 16.0),
         (([1, 2, 5, 6, 7, 9, 12, 15, 18, 19, 27],), 18.0),
         (([0, 1, 2, 2, 2, 2, 3, 5, 5],), 4.0),
-
     ]
 
     for case in testcases:
@@ -345,10 +417,7 @@ def test_q3():
 
 
 def test_var():
-    testcases = [
-        (([4, 2, 5, 8, 6],), 4.0),
-        (([1, 3, 2, 4, 6, 2, 4, 2],), 2.25)
-    ]
+    testcases = [(([4, 2, 5, 8, 6],), 4.0), (([1, 3, 2, 4, 6, 2, 4, 2],), 2.25)]
 
     for case in testcases:
         __my_assert_args(var, case[0], case[1])
@@ -364,10 +433,7 @@ def test_var_simulated():
 
 
 def test_std():
-    testcases = [
-        (([4, 2, 5, 8, 6],), 2.0),
-        (([1, 3, 2, 4, 6, 2, 4, 2],), 1.5)
-    ]
+    testcases = [(([4, 2, 5, 8, 6],), 2.0), (([1, 3, 2, 4, 6, 2, 4, 2],), 1.5)]
 
     for case in testcases:
         __my_assert_args(std, case[0], case[1])
@@ -379,7 +445,30 @@ def test_cor():
         (([1, 2, 3, 4], [-1, -2, -3, -4]), -1.0),
         (([1, 2, 3, 4], [0, 0, 0, 0]), 0.0),
         (([1, 2, 3, 4], [4, 7, 8, 15]), 0.9429903335828895),
-        (([29, 36, 41, 45, 48, 50, 56, 61, 67, 67, 67, 71, 75, 79, 83, 88], [4.1, 4.3, 4.0, 5.2, 4.8, 4.9, 5.9, 5.2, 4.9, 5.7, 6.2, 6.1, 4.4, 6.1, 6.8, 6.9]), 0.7872043771861374),
+        (
+            (
+                [29, 36, 41, 45, 48, 50, 56, 61, 67, 67, 67, 71, 75, 79, 83, 88],
+                [
+                    4.1,
+                    4.3,
+                    4.0,
+                    5.2,
+                    4.8,
+                    4.9,
+                    5.9,
+                    5.2,
+                    4.9,
+                    5.7,
+                    6.2,
+                    6.1,
+                    4.4,
+                    6.1,
+                    6.8,
+                    6.9,
+                ],
+            ),
+            0.7872043771861374,
+        ),
     ]
 
     for case in testcases:
@@ -400,7 +489,7 @@ def test_freq():
         (([4, 2, 5, 8, 6],), {2: 1, 4: 1, 5: 1, 6: 1, 8: 1}),
         (([1, 3, 4, 6, 4, 2],), {1: 1, 2: 1, 3: 1, 4: 2, 6: 1}),
         (([1, 3, 5, 6, 2, 4, 1],), {1: 2, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1}),
-        (([1, 4, 3, 5, 6, 2, 4, 1],), {1: 2, 2: 1, 3: 1, 4: 2, 5: 1, 6: 1})
+        (([1, 4, 3, 5, 6, 2, 4, 1],), {1: 2, 2: 1, 3: 1, 4: 2, 5: 1, 6: 1}),
     ]
 
     for case in testcases:
@@ -412,27 +501,30 @@ def test_modes():
         (([4, 2, 5, 8, 6],), [2, 4, 5, 6, 8]),
         (([1, 3, 4, 6, 4, 2],), [4]),
         (([1, 3, 4, 6, 2, 4, 2],), [2, 4]),
-        (([1, 3, 2, 4, 6, 2, 4, 2],), [2])
+        (([1, 3, 2, 4, 6, 2, 4, 2],), [2]),
     ]
 
     for case in testcases:
         __my_assert_args(modes, case[0], case[1])
 
+
 def test_modes_simulated():
     if sys.version_info[0] >= 3 and sys.version_info[1] >= 8:
         import random
         import statistics
+
         for lst_size in range(1, 11):
             lst_test = [random.choice(range(5)) for _ in range(lst_size)]
             __my_assert_args(modes, (lst_test,), sorted(statistics.multimode(lst_test)))
 
+
 def __main():
-    """ Test alle functies. """
+    """Test alle functies."""
     # Noodzakelijk voor gekleurde tekst binnen een Windows terminal
     os.system("")
 
     try:
-        print("\x1b[32m")   # Groene tekstkleur
+        print("\x1b[32m")  # Groene tekstkleur
         test_id()
 
         test_mean()
@@ -459,7 +551,27 @@ def __main():
         test_freq()
         print("Je functie freq(lst) werkt goed!")
 
-        plot_grades([29, 36, 41, 45, 48, 50, 56, 61, 67, 67, 67, 71, 75, 79, 83, 88], [4.1, 4.3, 4.0, 5.2, 4.8, 4.9, 5.9, 5.2, 4.9, 5.7, 6.2, 6.1, 4.4, 6.1, 6.8, 6.9])
+        plot_grades(
+            [29, 36, 41, 45, 48, 50, 56, 61, 67, 67, 67, 71, 75, 79, 83, 88],
+            [
+                4.1,
+                4.3,
+                4.0,
+                5.2,
+                4.8,
+                4.9,
+                5.9,
+                5.2,
+                4.9,
+                5.7,
+                6.2,
+                6.1,
+                4.4,
+                6.1,
+                6.8,
+                6.9,
+            ],
+        )
         print("Je functie plot_grades faalt niet!")
 
         test_modes()
@@ -468,19 +580,23 @@ def __main():
 
         print("\nGefeliciteerd, alles lijkt te werken!")
         print("\x1b[38;5;208m")
-        print("Echter, test dit testframework niet of je de juiste plot bij vraag 8 hebt gemaakt.\x1b[0m")
-        print("Controleer dus nog even of je plot correct is en lever dan pas je werk in op Canvas...")
+        print(
+            "Echter, test dit testframework niet of je de juiste plot bij vraag 8 hebt gemaakt.\x1b[0m"
+        )
+        print(
+            "Controleer dus nog even of je plot correct is en lever dan pas je werk in op Canvas..."
+        )
 
     except AssertionError as ae:
-        print("\x1b[31m")   # Rode tekstkleur
+        print("\x1b[31m")  # Rode tekstkleur
         if not ae:
             print("Je code veroorzaakt onderstaande AssertionError:")
             raise ae
         else:
             print(ae)
 
-    print("\x1b[0m")    # Reset tekstkleur
+    print("\x1b[0m")  # Reset tekstkleur
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     __main()
